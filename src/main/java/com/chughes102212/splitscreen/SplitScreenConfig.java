@@ -23,5 +23,9 @@ public final class SplitScreenConfig {
     public void layout(Layout value) { layout = value; PREFS.put("layout", value.name()); }
     public int playerOneController() { return playerOneController; }
     public int playerTwoController() { return playerTwoController; }
+    public void assignController(int player, int controller) {
+        if (player == 0) { playerOneController = controller; PREFS.putInt("player1.controller", controller); }
+        if (player == 1) { playerTwoController = controller; PREFS.putInt("player2.controller", controller); }
+    }
     public int viewportRenderDistance() { return viewportRenderDistance; }
 }
