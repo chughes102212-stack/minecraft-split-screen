@@ -21,10 +21,19 @@ public final class RenderDistanceCompatibility {
                 Math.min(MAX_DISTANCE, config.viewportRenderDistance()));
         if (distance == appliedDistance) return;
 
+        warnIfPotentiallyUnsafe(distance);
+
         // Minecraft's view-distance option is also the compatibility boundary
         // used by Sodium, Indium-compatible renderers, and vanilla chunk setup.
         client.options.getViewDistance().setValue(distance);
         appliedDistance = distance;
+    }
+
+    public void warnIfPotentiallyUnsafe(int distance) {
+        if (distance >= 14 || (SODIUM_PRESENT && distance >= 10)) {
+            System.err.println("[Minecraft Split Screen] WARNING: render distance " + distance +
+                    " may be unsafe on low-end GPUs. If the game crashes or stutters, reduce it to 8-12 chunks.");
+        }
     }
 
     public boolean sodiumPresent() {
