@@ -6,6 +6,7 @@ public final class SplitScreenRuntime {
     private final SplitScreenConfig config = SplitScreenConfig.load();
     private final ControllerManager controllers = new ControllerManager();
     private final PauseCoordinator pauseCoordinator = new PauseCoordinator();
+    private final SingleAccountSession account = new SingleAccountSession();
     private final LocalPlayerSlot[] players = {
             new LocalPlayerSlot(0, config.playerOneController()),
             new LocalPlayerSlot(1, config.playerTwoController())
@@ -13,6 +14,7 @@ public final class SplitScreenRuntime {
 
     public void tick(MinecraftClient client) {
         if (client.world == null) return;
+        if (!account.isCaptured()) account.capture(client);
         controllers.poll();
         for (LocalPlayerSlot player : players) {
             ControllerState state = controllers.state(player.controller());
@@ -26,4 +28,5 @@ public final class SplitScreenRuntime {
     public LocalPlayerSlot player(int index) { return players[index]; }
     public ControllerManager controllers() { return controllers; }
     public PauseCoordinator pauseCoordinator() { return pauseCoordinator; }
+    public SingleAccountSession account() { return account; }
 }
