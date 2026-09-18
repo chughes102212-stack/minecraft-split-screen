@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "split_screen",
+  "version": "${version}",
+  "name": "Minecraft Split Screen",
+  "description": "Two-player local split-screen for Minecraft Java Edition.",
+  "authors": ["chughes102212-stack"],
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": ["com.chughes102212.splitscreen.SplitScreenClient"]
+  },
+  "depends": {
+    "fabricloader": ">=0.18.1",
+    "minecraft": "1.21.11",
+    "fabric-api": "*"
+  }
+}
