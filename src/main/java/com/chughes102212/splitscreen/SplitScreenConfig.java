@@ -15,7 +15,7 @@ public final class SplitScreenConfig {
         c.layout = Layout.valueOf(PREFS.get("layout", Layout.HORIZONTAL.name()));
         c.playerOneController = PREFS.getInt("player1.controller", 0);
         c.playerTwoController = PREFS.getInt("player2.controller", 1);
-        c.viewportRenderDistance = Math.max(2, Math.min(12, PREFS.getInt("render_distance", 6)));
+        c.viewportRenderDistance = Math.max(2, Math.min(17, PREFS.getInt("render_distance", 6)));
         return c;
     }
 
