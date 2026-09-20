@@ -1,5 +1,0 @@
-distributionBase=GRADLE
-distributionPath=wrapper/dists
-distributionUrl=https\://services.gradle.org/distributions/gradle-8.5-bin.zip
-zipStoreBase=GRADLE
-zipStorePath=wrapper/dists
