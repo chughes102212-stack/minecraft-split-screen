@@ -18,7 +18,6 @@ public final class SplitScreenRuntime {
                 config.playerTwoController());
         players[0].controller(config.playerOneController());
         players[1].controller(config.playerTwoController());
-        players[1].joinTrigger(config.playerTwoJoinTrigger());
     }
 
     public void tick(MinecraftClient client) {

@@ -35,11 +35,10 @@ public final class ControllerMappingScreen extends Screen {
             ).dimensions(left, y, 310, 20).build());
         }
 
-        int joinY = top + row++ * ROW_HEIGHT;
         this.addDrawableChild(ButtonWidget.builder(
-                Text.literal("Player 2 join trigger: " + config.playerTwoJoinTrigger().name()),
-                button -> cycleJoinTrigger()
-        ).dimensions(left, joinY, 310, 20).build());
+                Text.literal("Player 2 Join: Press A Button (like Bedrock Edition)"),
+                button -> {}
+        ).dimensions(left, top + row++ * ROW_HEIGHT, 310, 20).build());
 
         for (ControllerMapping.Action action : ControllerMapping.Action.values()) {
             int y = top + row++ * ROW_HEIGHT;
@@ -63,23 +62,6 @@ public final class ControllerMappingScreen extends Screen {
         if (SplitScreenClient.runtime() != null) {
             SplitScreenClient.runtime().controllers().assignPlayerToController(player, nextController);
             SplitScreenClient.runtime().player(player).controller(nextController);
-        }
-        clearAndInit();
-    }
-
-    private void cycleJoinTrigger() {
-        SplitScreenConfig.JoinTrigger[] values = SplitScreenConfig.JoinTrigger.values();
-        int currentIndex = 0;
-        for (int i = 0; i < values.length; i++) {
-            if (values[i] == config.playerTwoJoinTrigger()) {
-                currentIndex = i;
-                break;
-            }
-        }
-        SplitScreenConfig.JoinTrigger next = values[(currentIndex + 1) % values.length];
-        config.playerTwoJoinTrigger(next);
-        if (SplitScreenClient.runtime() != null) {
-            SplitScreenClient.runtime().player(1).joinTrigger(next);
         }
         clearAndInit();
     }

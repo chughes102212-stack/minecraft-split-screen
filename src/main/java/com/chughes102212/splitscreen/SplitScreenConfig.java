@@ -4,13 +4,11 @@ import java.util.prefs.Preferences;
 
 public final class SplitScreenConfig {
     public enum Layout { HORIZONTAL, VERTICAL }
-    public enum JoinTrigger { JUMP, ATTACK, USE, PAUSE }
 
     private static final Preferences PREFS = Preferences.userRoot().node("minecraft-split-screen");
     private Layout layout = Layout.HORIZONTAL;
     private int playerOneController = 0;
     private int playerTwoController = 1;
-    private JoinTrigger playerTwoJoinTrigger = JoinTrigger.JUMP;
     private int viewportRenderDistance = 6;
 
     public static SplitScreenConfig load() {
@@ -18,7 +16,6 @@ public final class SplitScreenConfig {
         c.layout = Layout.valueOf(PREFS.get("layout", Layout.HORIZONTAL.name()));
         c.playerOneController = PREFS.getInt("player1.controller", 0);
         c.playerTwoController = PREFS.getInt("player2.controller", 1);
-        c.playerTwoJoinTrigger = JoinTrigger.valueOf(PREFS.get("player2.join.trigger", JoinTrigger.JUMP.name()));
         c.viewportRenderDistance = Math.max(2, Math.min(17, PREFS.getInt("render_distance", 6)));
         return c;
     }
@@ -27,11 +24,6 @@ public final class SplitScreenConfig {
     public void layout(Layout value) { layout = value; PREFS.put("layout", value.name()); }
     public int playerOneController() { return playerOneController; }
     public int playerTwoController() { return playerTwoController; }
-    public JoinTrigger playerTwoJoinTrigger() { return playerTwoJoinTrigger; }
-    public void playerTwoJoinTrigger(JoinTrigger value) {
-        playerTwoJoinTrigger = value == null ? JoinTrigger.JUMP : value;
-        PREFS.put("player2.join.trigger", playerTwoJoinTrigger.name());
-    }
     public void assignController(int player, int controller) {
         int normalized = Math.max(0, Math.min(15, controller));
         if (player == 0) { playerOneController = normalized; PREFS.putInt("player1.controller", normalized); }

@@ -7,7 +7,6 @@ public final class LocalPlayerSlot {
     private int controller;
     private final ControllerState input = new ControllerState();
     private boolean active = (index == 0);
-    private SplitScreenConfig.JoinTrigger joinTrigger = SplitScreenConfig.JoinTrigger.JUMP;
 
     public LocalPlayerSlot(int index, int controller) {
         this.index = index;
@@ -16,23 +15,9 @@ public final class LocalPlayerSlot {
 
     public void tick(MinecraftClient client, ControllerState state) {
         input.copyFrom(state);
-        if (!active && shouldJoin(state)) {
+        if (!active && state.jumpPressed()) {
             activate();
         }
-    }
-
-    public boolean shouldJoin(ControllerState state) {
-        if (state == null) return false;
-        return switch (joinTrigger) {
-            case JUMP -> state.jumpPressed();
-            case ATTACK -> state.attackPressed();
-            case USE -> state.usePressed();
-            case PAUSE -> state.pausePressed();
-        };
-    }
-
-    public void joinTrigger(SplitScreenConfig.JoinTrigger value) {
-        joinTrigger = value == null ? SplitScreenConfig.JoinTrigger.JUMP : value;
     }
 
     public void activate() {
