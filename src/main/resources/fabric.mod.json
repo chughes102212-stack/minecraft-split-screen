@@ -1,15 +1,23 @@
+````markdown name=fabric.mod.json
 {
   "schemaVersion": 1,
   "id": "split_screen",
-  "version": "${version}",
-  "name": "Minecraft Split Screen",
-  "description": "Two-player local split-screen for Minecraft Java Edition.",
-  "authors": ["chughes102212-stack"],
+  "version": "${mod_version}",
+  "name": "${mod_name}",
+  "description": "${mod_description}",
+  "authors": ["${mod_author}"],
+  "contact": {
+    "homepage": "${mod_homepage}",
+    "sources": "${mod_sources}",
+    "issues": "${mod_issues}"
+  },
   "license": "MIT",
+  "icon": "assets/split_screen/icon.png",
   "environment": "client",
   "entrypoints": {
     "client": ["com.chughes102212.splitscreen.SplitScreenClient"]
   },
+  "mixins": [],
   "depends": {
     "fabricloader": ">=0.18.1",
     "minecraft": "1.21.11",
@@ -17,3 +25,4 @@
     "midnightcontrols": "*"
   }
 }
+````
