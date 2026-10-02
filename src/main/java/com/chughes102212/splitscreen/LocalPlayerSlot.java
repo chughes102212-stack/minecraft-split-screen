@@ -6,6 +6,7 @@ public final class LocalPlayerSlot {
     private final int index;
     private int controller;
     private final ControllerState input = new ControllerState();
+    private boolean active = (index == 0);
 
     public LocalPlayerSlot(int index, int controller) {
         this.index = index;
@@ -14,6 +15,21 @@ public final class LocalPlayerSlot {
 
     public void tick(MinecraftClient client, ControllerState state) {
         input.copyFrom(state);
+        if (!active && input.jumpPressed()) {
+            activate();
+        }
+    }
+
+    public void activate() {
+        active = true;
+    }
+
+    public void deactivate() {
+        active = false;
+    }
+
+    public boolean isActive() {
+        return active;
     }
 
     public int index() { return index; }
