@@ -1,7 +1,6 @@
 plugins {
     id 'fabric-loom' version '1.14-SNAPSHOT'
     id 'maven-publish'
-    id 'com.modrinth.minotaur' version '2.+'
 }
 
 group = project.mavenGroup
@@ -34,11 +33,20 @@ processResources {
     inputs.property 'mod_name', project.mod_name
     inputs.property 'mod_description', project.mod_description
     inputs.property 'mod_author', project.mod_author
+    inputs.property 'mod_homepage', project.mod_homepage
+    inputs.property 'mod_sources', project.mod_sources
+    inputs.property 'mod_issues', project.mod_issues
+    inputs.property 'mod_license', project.mod_license
+
     filesMatching('fabric.mod.json') {
         expand 'version': project.version,
                'mod_name': project.mod_name,
                'mod_description': project.mod_description,
-               'mod_author': project.mod_author
+               'mod_author': project.mod_author,
+               'mod_homepage': project.mod_homepage,
+               'mod_sources': project.mod_sources,
+               'mod_issues': project.mod_issues,
+               'mod_license': project.mod_license
     }
 }
 
@@ -63,17 +71,5 @@ publishing {
         create('mavenJava', MavenPublication) {
             from components.java
         }
-    }
-}
-
-task curseforgePublish {
-    dependsOn 'build'
-    doLast {
-        println "\nTo publish to CurseForge:"
-        println "1. Set CURSEFORGE_API_TOKEN in gradle.properties or as an environment variable"
-        println "2. Run: ./gradlew publishCurseforge"
-        println "\nTo publish to Modrinth:"
-        println "1. Set MODRINTH_TOKEN in gradle.properties or as an environment variable"
-        println "2. Run: ./gradlew modrinth"
     }
 }

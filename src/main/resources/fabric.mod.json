@@ -1,8 +1,7 @@
-````markdown name=fabric.mod.json
 {
   "schemaVersion": 1,
   "id": "split_screen",
-  "version": "${mod_version}",
+  "version": "${version}",
   "name": "${mod_name}",
   "description": "${mod_description}",
   "authors": ["${mod_author}"],
@@ -11,11 +10,13 @@
     "sources": "${mod_sources}",
     "issues": "${mod_issues}"
   },
-  "license": "MIT",
+  "license": "${mod_license}",
   "icon": "assets/split_screen/icon.png",
   "environment": "client",
   "entrypoints": {
-    "client": ["com.chughes102212.splitscreen.SplitScreenClient"]
+    "client": [
+      "com.chughes102212.splitscreen.SplitScreenClient"
+    ]
   },
   "mixins": [],
   "depends": {
@@ -25,4 +26,3 @@
     "midnightcontrols": "*"
   }
 }
-````
