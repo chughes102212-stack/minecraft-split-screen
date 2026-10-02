@@ -9,20 +9,32 @@ import net.minecraft.text.Text;
 public final class ControllerMappingScreen extends Screen {
     private static final int ROW_HEIGHT = 24;
     private final Screen parent;
+    private final SplitScreenConfig config;
     private final ControllerMapping mapping;
     private ControllerMapping.Action listeningFor;
 
     public ControllerMappingScreen(Screen parent, ControllerProfile profile) {
         super(Text.translatable("screen.split_screen.controller_mapping"));
         this.parent = parent;
+        this.config = SplitScreenConfig.load();
         this.mapping = new ControllerMapping(profile);
     }
 
     @Override
     protected void init() {
         int left = this.width / 2 - 155;
-        int top = 45;
+        int top = 35;
         int row = 0;
+
+        for (int player = 0; player < 2; player++) {
+            int y = top + row++ * ROW_HEIGHT;
+            int controllerId = player == 0 ? config.playerOneController() : config.playerTwoController();
+            this.addDrawableChild(ButtonWidget.builder(
+                    Text.literal("Player " + (player + 1) + ": Controller " + controllerId),
+                    button -> cycleController(player)
+            ).dimensions(left, y, 310, 20).build());
+        }
+
         for (ControllerMapping.Action action : ControllerMapping.Action.values()) {
             int y = top + row++ * ROW_HEIGHT;
             this.addDrawableChild(ButtonWidget.builder(label(action), button -> beginListening(action))
@@ -35,6 +47,17 @@ public final class ControllerMappingScreen extends Screen {
     private Text label(ControllerMapping.Action action) {
         String suffix = listeningFor == action ? "  < Press a button >" : "  [" + mapping.button(action) + "]";
         return Text.literal(action.name().replace('_', ' ') + suffix);
+    }
+
+    private void cycleController(int player) {
+        int nextController = (player == 0 ? config.playerOneController() : config.playerTwoController()) + 1;
+        if (nextController > 15) nextController = 0;
+        config.assignController(player, nextController);
+        if (SplitScreenClient.runtime() != null) {
+            SplitScreenClient.runtime().controllers().assignPlayerToController(player, nextController);
+            SplitScreenClient.runtime().player(player).controller(nextController);
+        }
+        clearAndInit();
     }
 
     private void beginListening(ControllerMapping.Action action) {
