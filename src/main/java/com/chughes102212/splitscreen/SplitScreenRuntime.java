@@ -8,8 +8,8 @@ public final class SplitScreenRuntime {
     private final PauseCoordinator pauseCoordinator = new PauseCoordinator();
     private final SingleAccountSession account = new SingleAccountSession();
     private final LocalPlayerSlot[] players = {
-            new LocalPlayerSlot(0, config.playerOneController()),
-            new LocalPlayerSlot(1, config.playerTwoController())
+            new LocalPlayerSlot(0, SplitScreenConfig.load().playerOneController()),
+            new LocalPlayerSlot(1, SplitScreenConfig.load().playerTwoController())
     };
 
     public SplitScreenRuntime() {
@@ -18,6 +18,7 @@ public final class SplitScreenRuntime {
                 config.playerTwoController());
         players[0].controller(config.playerOneController());
         players[1].controller(config.playerTwoController());
+        players[1].joinTrigger(config.playerTwoJoinTrigger());
     }
 
     public void tick(MinecraftClient client) {

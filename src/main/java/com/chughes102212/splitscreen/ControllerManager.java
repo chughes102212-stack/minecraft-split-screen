@@ -9,10 +9,9 @@ public final class ControllerManager {
     private final Map<Integer, Integer> playerAssignments = new HashMap<>();
 
     public void poll() {
-        // Device enumeration and button-edge polling are kept behind this boundary.
-        // MidnightControls supplies the device list and button state for the active
-        // local controllers, while this manager keeps the split-screen player routing.
-        for (int i = 0; i < 16; i++) states.computeIfAbsent(i, ignored -> new ControllerState());
+        for (int i = 0; i < 16; i++) {
+            states.computeIfAbsent(i, ignored -> new ControllerState());
+        }
     }
 
     public ControllerState state(int controller) {

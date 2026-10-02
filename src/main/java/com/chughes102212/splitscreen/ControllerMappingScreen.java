@@ -36,8 +36,8 @@ public final class ControllerMappingScreen extends Screen {
         }
 
         this.addDrawableChild(ButtonWidget.builder(
-                Text.literal("Player 2 Join: Press A Button (like Bedrock Edition)"),
-                button -> {}
+                Text.literal("Player 2 join trigger: " + config.playerTwoJoinTrigger().name()),
+                button -> cycleJoinTrigger()
         ).dimensions(left, top + row++ * ROW_HEIGHT, 310, 20).build());
 
         for (ControllerMapping.Action action : ControllerMapping.Action.values()) {
@@ -45,6 +45,7 @@ public final class ControllerMappingScreen extends Screen {
             this.addDrawableChild(ButtonWidget.builder(label(action), button -> beginListening(action))
                     .dimensions(left, y, 310, 20).build());
         }
+
         this.addDrawableChild(ButtonWidget.builder(Text.translatable("gui.done"), button -> close())
                 .dimensions(this.width / 2 - 100, top + row * ROW_HEIGHT + 10, 200, 20).build());
     }
@@ -66,12 +67,28 @@ public final class ControllerMappingScreen extends Screen {
         clearAndInit();
     }
 
+    private void cycleJoinTrigger() {
+        SplitScreenConfig.JoinTrigger[] values = SplitScreenConfig.JoinTrigger.values();
+        int currentIndex = 0;
+        for (int i = 0; i < values.length; i++) {
+            if (values[i] == config.playerTwoJoinTrigger()) {
+                currentIndex = i;
+                break;
+            }
+        }
+        SplitScreenConfig.JoinTrigger next = values[(currentIndex + 1) % values.length];
+        config.playerTwoJoinTrigger(next);
+        if (SplitScreenClient.runtime() != null) {
+            SplitScreenClient.runtime().player(1).joinTrigger(next);
+        }
+        clearAndInit();
+    }
+
     private void beginListening(ControllerMapping.Action action) {
         listeningFor = action;
         clearAndInit();
     }
 
-    /** Called by the controller backend when a button edge is detected. */
     public void acceptButton(String buttonName) {
         if (listeningFor == null) return;
         mapping.set(listeningFor, buttonName);
