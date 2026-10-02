@@ -12,11 +12,24 @@ public final class SplitScreenRuntime {
             new LocalPlayerSlot(1, config.playerTwoController())
     };
 
+    public SplitScreenRuntime() {
+        MidnightControlsBridge.bindDefaultPlayerControllers(controllers,
+                config.playerOneController(),
+                config.playerTwoController());
+        players[0].controller(config.playerOneController());
+        players[1].controller(config.playerTwoController());
+    }
+
     public void tick(MinecraftClient client) {
         if (client.world == null) return;
         if (!account.isCaptured()) account.capture(client);
         controllers.poll();
+
         for (LocalPlayerSlot player : players) {
+            int controllerId = controllers.controllerForPlayer(player.index());
+            if (player.controller() != controllerId) {
+                player.controller(controllerId);
+            }
             ControllerState state = controllers.state(player.controller());
             player.tick(client, state);
             pauseCoordinator.setPaused(player.index(), state.pause);
