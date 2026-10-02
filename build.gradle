@@ -1,6 +1,7 @@
 plugins {
     id 'fabric-loom' version '1.14-SNAPSHOT'
     id 'maven-publish'
+    id 'com.modrinth.minotaur' version '2.+'
 }
 
 group = project.mavenGroup
@@ -71,5 +72,17 @@ publishing {
         create('mavenJava', MavenPublication) {
             from components.java
         }
+    }
+}
+
+task curseforgePublish {
+    dependsOn 'build'
+    doLast {
+        println "\nTo publish to CurseForge:"
+        println "1. Set CURSEFORGE_API_TOKEN in gradle.properties or as an environment variable"
+        println "2. Run: ./gradlew publishCurseforge"
+        println "\nTo publish to Modrinth:"
+        println "1. Set MODRINTH_TOKEN in gradle.properties or as an environment variable"
+        println "2. Run: ./gradlew modrinth"
     }
 }
